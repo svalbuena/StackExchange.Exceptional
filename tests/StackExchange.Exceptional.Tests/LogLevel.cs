@@ -1,16 +1,18 @@
-﻿using StackTest;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
-namespace StackExchange.Exceptional
+namespace StackExchange.Exceptional.Tests
 {
-    public sealed class ExceptionExtensionsTests : IDisposable
+    public class LogLevel : BaseTest
     {
-        // Ensure that the "ApplyDefaultLevelToAllThrowExceptions" logic from ExceptionExtensions is removed (if it was enabled) after each test because each
+        public LogLevel(ITestOutputHelper output) : base(output) { }
+
+        // Ensure that the "ApplyDefaultLevelToAllThrowExceptions" logic from Extensions is removed (if it was enabled) after each test because each
         // test should explicitly opt into enabling it (some tests will be designed to run without it)
-        public void Dispose() => ExceptionExtensions.UnhookApplyDefaultLevelToAllThrowExceptions();
+        public void Dispose() => Extensions.UnhookApplyDefaultLevelToAllThrowExceptions();
 
         [Fact]
         public void NothingSetIfDefaultsNotEnabledAndNothingSetOnException()
@@ -22,7 +24,7 @@ namespace StackExchange.Exceptional
         [Fact]
         public void LevelSetByDefaultsIfEnabledAndNothingSetOnException()
         {
-            ExceptionExtensions.ApplyDefaultLevelToAllThrowExceptions();
+            Extensions.ApplyDefaultLevelToAllThrowExceptions();
             var ex = Assert.Throws<Exception>(Act(() => throw new Exception("FAIL")));
             Assert.Equal(ExceptionLogLevel.Critical, ex.TryToGetLogLevel());
         }
@@ -37,7 +39,7 @@ namespace StackExchange.Exceptional
         [Fact]
         public void LevelSetOnExceptionOverridesDefaults()
         {
-            ExceptionExtensions.ApplyDefaultLevelToAllThrowExceptions();
+            Extensions.ApplyDefaultLevelToAllThrowExceptions();
             var ex = Assert.Throws<Exception>(Act(() => throw new Exception("FAIL").Warning()));
             Assert.Equal(ExceptionLogLevel.Warning, ex.TryToGetLogLevel());
         }
@@ -89,7 +91,7 @@ namespace StackExchange.Exceptional
         [Fact]
         public void DefaultLevelAppliedToExceptionInAggregateExceptionButNotTheWrapper()
         {
-            ExceptionExtensions.ApplyDefaultLevelToAllThrowExceptions();
+            Extensions.ApplyDefaultLevelToAllThrowExceptions();
 
             // Note: Use Task.WaitAll to get an AggregateException raise (Task.WhenAll will unwrap the AggregateException to make async/await code tidier)
             var ex = Assert.Throws<AggregateException>(() => Task.WaitAll(GetFailingTask()));
@@ -106,7 +108,7 @@ namespace StackExchange.Exceptional
         [Fact]
         public void LevelSetOnExceptionOverridesDefaultOnAggregateExceptionInnerException()
         {
-            ExceptionExtensions.ApplyDefaultLevelToAllThrowExceptions();
+            Extensions.ApplyDefaultLevelToAllThrowExceptions();
 
             var ex = Assert.Throws<AggregateException>(() => Task.WaitAll(GetFailingTask()));
             Assert.Equal(ExceptionLogLevel.Warning, ex.InnerException.TryToGetLogLevel());
@@ -125,7 +127,7 @@ namespace StackExchange.Exceptional
         [Fact]
         public async Task NothingSetOnTaskCanceledException()
         {
-            ExceptionExtensions.ApplyDefaultLevelToAllThrowExceptions();
+            Extensions.ApplyDefaultLevelToAllThrowExceptions();
 
             var cts = new CancellationTokenSource(delay: TimeSpan.FromMilliseconds(100));
             var task = Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
