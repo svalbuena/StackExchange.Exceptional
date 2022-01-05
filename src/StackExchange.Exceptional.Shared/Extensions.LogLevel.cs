@@ -6,7 +6,7 @@ namespace StackExchange.Exceptional
     public static partial class Extensions
     {
         const string LogLevelKey = "ExceptionLogging.Level";
-​
+        
         public static void ApplyDefaultLevelToAllThrowExceptions() => AppDomain.CurrentDomain.FirstChanceException += FirstThrown;
 ​
         /// <summary>
