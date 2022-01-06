@@ -190,8 +190,8 @@ Update {_tableName}
 
         private string _sqlLogInsert;
         private string SqlLogInsert => _sqlLogInsert ?? (_sqlLogInsert = $@"
-Insert Into {_tableName} (GUID, ApplicationName, Category, MachineName, CreationDate, Type, IsProtected, Host, Url, HTTPMethod, IPAddress, Source, Message, Detail, StatusCode, FullJson, ErrorHash, DuplicateCount, LastLogDate)
-Values (@GUID, @ApplicationName, @Category, @MachineName, @CreationDate, @Type, @IsProtected, @Host, @Url, @HTTPMethod, @IPAddress, @Source, @Message, @Detail, @StatusCode, @FullJson, @ErrorHash, @DuplicateCount, @LastLogDate)");
+Insert Into {_tableName} (GUID, ApplicationName, Category, MachineName, CreationDate, Type, IsProtected, Host, Url, HTTPMethod, IPAddress, Source, Message, Detail, StatusCode, FullJson, ErrorHash, DuplicateCount, LastLogDate, ExceptionLevelId)
+Values (@GUID, @ApplicationName, @Category, @MachineName, @CreationDate, @Type, @IsProtected, @Host, @Url, @HTTPMethod, @IPAddress, @Source, @Message, @Detail, @StatusCode, @FullJson, @ErrorHash, @DuplicateCount, @LastLogDate, @ExceptionLevelId)");
 
         private DynamicParameters GetUpdateParams(Error error)
         {
@@ -227,7 +227,8 @@ Values (@GUID, @ApplicationName, @Category, @MachineName, @CreationDate, @Type, 
             error.FullJson,
             error.ErrorHash,
             error.DuplicateCount,
-            error.LastLogDate
+            error.LastLogDate,
+            error.ExceptionLevelId,
         };
 
         /// <summary>
@@ -310,6 +311,7 @@ Select *
             result.DeletionDate = sqlError.DeletionDate;
             result.IsProtected = sqlError.IsProtected;
             result.LastLogDate = sqlError.LastLogDate;
+            result.ExceptionLevelId = sqlError.ExceptionLevelId;
             return result;
         }
 

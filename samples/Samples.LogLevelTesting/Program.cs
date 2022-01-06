@@ -30,14 +30,11 @@ namespace Samples.LogLevelTesting
 
             try
             {
-                throw new Exception("Just a try/catch test");
+                throw new Exception("Just a try/catch test woo");
             }
             catch (Exception ex)
             {
-                ex.AddLogData("Example string", DateTime.UtcNow.ToString())
-                  .AddLogData("User Id", "You could fetch a user/account Id here, etc.")
-                  .AddLogData("Links get linkified", "https://www.google.com")
-                  .Trace();
+                ex.Trace();
 
                 // logged, but caught so we don't crash
                 ex.LogNoContext();
@@ -50,7 +47,7 @@ namespace Samples.LogLevelTesting
             PauseForInput();
 
             // one not explicitly caught, will be logged by ExceptionHandler
-            throw new Exception("I am an exception thrown on exit");
+            throw new Exception("I am an exception thrown on exit noooo");
         }
 
         private static async Task DisplayExceptionStatsAsync()
@@ -66,8 +63,7 @@ namespace Samples.LogLevelTesting
 
             var last = errors[0];
             WriteLine($"Latest: {last.Message} on {last.CreationDate.ToString()}");
-            foreach (var customData in last.CustomData)
-                WriteLine($"    CustomData: '{customData.Key}': '{customData.Value}'");
+            WriteLine($"Exception Level: '{last.ExceptionLevel()}'");
         }
 
         private static void PauseForInput()

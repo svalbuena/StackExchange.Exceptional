@@ -6,7 +6,7 @@ namespace StackExchange.Exceptional
 {
     public static partial class Extensions
     {
-        const string LogLevelKey = "ExceptionLogging.Level";
+        public const string LogLevelKey = "ExceptionLogging.Level";
 
         public static void ApplyDefaultLevelToAllThrowExceptions() => AppDomain.CurrentDomain.FirstChanceException += FirstThrown;
 
@@ -48,7 +48,7 @@ namespace StackExchange.Exceptional
         static T RecordLogLevel<T>(this T source, ExceptionLogLevel logLevel, bool overrideAnyCurrentValue) where T : Exception
         {
             if (overrideAnyCurrentValue || !source.Data.Contains(LogLevelKey))
-                AddLogData(source, LogLevelKey, logLevel.ToString());
+                source.Data[LogLevelKey] = logLevel;
             return source;
         }
         
