@@ -656,10 +656,13 @@ namespace StackExchange.Exceptional
         }
 
         /// <summary>
-        /// Level of exception, ranging from Trace to Critical, used by monitoring tools
+        /// Level of exception as an integer, ranging from Trace to Critical, used by monitoring tools
         /// </summary>
         public int LogLevel { get; set; }
 
+        /// <summary>
+        /// Translate the LogLevel to the enum entry it corresponds to
+        /// </summary>
         public ExceptionLogLevel ExceptionLevel()
         {
             int level = LogLevel;

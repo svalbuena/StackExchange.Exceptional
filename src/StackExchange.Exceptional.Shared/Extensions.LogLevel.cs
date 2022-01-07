@@ -7,22 +7,64 @@ namespace StackExchange.Exceptional
     public static partial class Extensions
     {
         public const string LogLevelKey = "ExceptionLogging.Level";
-        
+
+        /// <summary>
+        /// Sets the LogLevel on the exception to 0 (Trace)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"> The <see cref="Exception"/> to set log level on </param>
+        /// <param name="overrideAnyCurrentValue"> Whether an existing log level should be overwritten </param>
+        /// <returns> The original <see cref="Exception"/>, for chaining</returns>
         public static T Trace<T>(this T source, bool overrideAnyCurrentValue = true) where T : Exception =>
             source.RecordLogLevel(ExceptionLogLevel.Trace, overrideAnyCurrentValue);
-        
+
+        /// <summary>
+        /// Sets the LogLevel on the exception to 1 (Trace)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"> The <see cref="Exception"/> to set log level on </param>
+        /// <param name="overrideAnyCurrentValue"> Whether an existing log level should be overwritten </param>
+        /// <returns> The original <see cref="Exception"/>, for chaining</returns>
         public static T Debug<T>(this T source, bool overrideAnyCurrentValue = true) where T : Exception =>
             source.RecordLogLevel(ExceptionLogLevel.Debug, overrideAnyCurrentValue);
-        
+
+        /// <summary>
+        /// Sets the LogLevel on the exception to 2 (Trace)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"> The <see cref="Exception"/> to set log level on </param>
+        /// <param name="overrideAnyCurrentValue"> Whether an existing log level should be overwritten </param>
+        /// <returns> The original <see cref="Exception"/>, for chaining</returns>
         public static T Info<T>(this T source, bool overrideAnyCurrentValue = true) where T : Exception =>
             source.RecordLogLevel(ExceptionLogLevel.Info, overrideAnyCurrentValue);
-        
+
+        /// <summary>
+        /// Sets the LogLevel on the exception to 3 (Trace)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"> The <see cref="Exception"/> to set log level on </param>
+        /// <param name="overrideAnyCurrentValue"> Whether an existing log level should be overwritten </param>
+        /// <returns> The original <see cref="Exception"/>, for chaining</returns>
         public static T Error<T>(this T source, bool overrideAnyCurrentValue = true) where T : Exception =>
             source.RecordLogLevel(ExceptionLogLevel.Error, overrideAnyCurrentValue);
-        
+
+        /// <summary>
+        /// Sets the LogLevel on the exception to 4 (Trace)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"> The <see cref="Exception"/> to set log level on </param>
+        /// <param name="overrideAnyCurrentValue"> Whether an existing log level should be overwritten </param>
+        /// <returns> The original <see cref="Exception"/>, for chaining</returns>
         public static T Warning<T>(this T source, bool overrideAnyCurrentValue = true) where T : Exception =>
             source.RecordLogLevel(ExceptionLogLevel.Warning, overrideAnyCurrentValue);
-        
+
+        /// <summary>
+        /// Sets the LogLevel on the exception to 5 (Trace)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"> The <see cref="Exception"/> to set log level on </param>
+        /// <param name="overrideAnyCurrentValue"> Whether an existing log level should be overwritten </param>
+        /// <returns> The original <see cref="Exception"/>, for chaining</returns>
         public static T Critical<T>(this T source, bool overrideAnyCurrentValue = true) where T : Exception =>
             source.RecordLogLevel(ExceptionLogLevel.Critical, overrideAnyCurrentValue);
         
