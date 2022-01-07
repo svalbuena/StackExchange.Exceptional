@@ -195,7 +195,7 @@ namespace StackExchange.Exceptional
 
         private void AddExceptionLevel(ExceptionLogLevel level)
         {
-            ExceptionLevelId = (int)level + 1; // TODO: Get from store, this is hacky
+            LogLevel = (int)level;
         }
 
         /// <summary>
@@ -658,11 +658,11 @@ namespace StackExchange.Exceptional
         /// <summary>
         /// Level of exception, ranging from Trace to Critical, used by monitoring tools
         /// </summary>
-        public int ExceptionLevelId { get; set; }
+        public int LogLevel { get; set; }
 
         public ExceptionLogLevel ExceptionLevel()
         {
-            int level = ExceptionLevelId - 1;
+            int level = LogLevel;
             return (ExceptionLogLevel)level;
         }
     }
