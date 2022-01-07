@@ -10,10 +10,6 @@ namespace StackExchange.Exceptional.Tests
     {
         public LogLevel(ITestOutputHelper output) : base(output) { }
 
-        // Ensure that the "ApplyDefaultLevelToAllThrowExceptions" logic from Extensions is removed (if it was enabled) after each test because each
-        // test should explicitly opt into enabling it (some tests will be designed to run without it)
-        public void Dispose() => Extensions.UnhookApplyDefaultLevelToAllThrowExceptions();
-
         [Fact]
         public void NothingSetIfDefaultsNotEnabledAndNothingSetOnException()
         {
@@ -24,7 +20,6 @@ namespace StackExchange.Exceptional.Tests
         [Fact]
         public void LevelSetByDefaultsIfEnabledAndNothingSetOnException()
         {
-            Extensions.ApplyDefaultLevelToAllThrowExceptions();
             var ex = Assert.Throws<Exception>(Act(() => throw new Exception("FAIL")));
             Assert.Equal(ExceptionLogLevel.Critical, ex.TryToGetLogLevel());
         }
@@ -39,7 +34,6 @@ namespace StackExchange.Exceptional.Tests
         [Fact]
         public void LevelSetOnExceptionOverridesDefaults()
         {
-            Extensions.ApplyDefaultLevelToAllThrowExceptions();
             var ex = Assert.Throws<Exception>(Act(() => throw new Exception("FAIL").Warning()));
             Assert.Equal(ExceptionLogLevel.Warning, ex.TryToGetLogLevel());
         }
@@ -91,8 +85,6 @@ namespace StackExchange.Exceptional.Tests
         [Fact]
         public void DefaultLevelAppliedToExceptionInAggregateExceptionButNotTheWrapper()
         {
-            Extensions.ApplyDefaultLevelToAllThrowExceptions();
-
             // Note: Use Task.WaitAll to get an AggregateException raise (Task.WhenAll will unwrap the AggregateException to make async/await code tidier)
             var ex = Assert.Throws<AggregateException>(() => Task.WaitAll(GetFailingTask()));
             Assert.Null(ex.TryToGetLogLevel());
@@ -108,8 +100,6 @@ namespace StackExchange.Exceptional.Tests
         [Fact]
         public void LevelSetOnExceptionOverridesDefaultOnAggregateExceptionInnerException()
         {
-            Extensions.ApplyDefaultLevelToAllThrowExceptions();
-
             var ex = Assert.Throws<AggregateException>(() => Task.WaitAll(GetFailingTask()));
             Assert.Equal(ExceptionLogLevel.Warning, ex.InnerException.TryToGetLogLevel());
 
@@ -127,8 +117,6 @@ namespace StackExchange.Exceptional.Tests
         [Fact]
         public async Task NothingSetOnTaskCanceledException()
         {
-            Extensions.ApplyDefaultLevelToAllThrowExceptions();
-
             var cts = new CancellationTokenSource(delay: TimeSpan.FromMilliseconds(100));
             var task = Task.Delay(TimeSpan.FromSeconds(5), cts.Token);
 

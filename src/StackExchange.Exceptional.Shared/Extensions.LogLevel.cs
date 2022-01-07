@@ -7,25 +7,6 @@ namespace StackExchange.Exceptional
     public static partial class Extensions
     {
         public const string LogLevelKey = "ExceptionLogging.Level";
-
-        public static void ApplyDefaultLevelToAllThrowExceptions() => AppDomain.CurrentDomain.FirstChanceException += FirstThrown;
-
-        /// <summary>
-        /// Should only need to call this from unit tests, so set as internal and use InternalsVisibleTo to make it available to that code
-        /// </summary>
-        public static void UnhookApplyDefaultLevelToAllThrowExceptions() => AppDomain.CurrentDomain.FirstChanceException -= FirstThrown;
-        
-        static void FirstThrown(object sender, FirstChanceExceptionEventArgs e)
-        {
-            // We don't want to log TaskCanceledException / OperationCanceledException because they indicate control flow, rather than an error as such,
-            // and don't want to log AggregateException because it would be essentially be a duplicate of the exception(s) that it wraps (which SHOULD
-            // be logged)
-            if ((e.Exception is OperationCanceledException) // Note: Also covers TaskCanceledException
-            || (e.Exception is AggregateException))
-                return;
-            
-            e.Exception.RecordLogLevel(ExceptionLogLevel.Critical, overrideAnyCurrentValue: false);
-        }
         
         public static T Trace<T>(this T source, bool overrideAnyCurrentValue = true) where T : Exception =>
             source.RecordLogLevel(ExceptionLogLevel.Trace, overrideAnyCurrentValue);
