@@ -119,9 +119,6 @@ END
 IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Exceptions' AND COLUMN_NAME = 'LogLevel')
 BEGIN
     ALTER TABLE [dbo].[Exceptions]
-    ADD [LogLevel] tinyint NOT NULL;
-
-    ALTER TABLE dbo.Exceptions
-    ADD CONSTRAINT DF_Exceptions_LogLevel
-    DEFAULT 5 FOR LogLevel;
+        ADD [LogLevel] tinyint NOT NULL
+            CONSTRAINT DF_Exceptions_LogLevel DEFAULT 5;
 END
