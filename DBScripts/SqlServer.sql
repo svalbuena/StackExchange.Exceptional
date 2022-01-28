@@ -30,7 +30,7 @@ CREATE TABLE [dbo].[Exceptions](
     [DuplicateCount] int NOT NULL DEFAULT(1),
     [LastLogDate] datetime NULL,
     [Category] nvarchar(100) NULL,
-    [LogLevel] tinyint NOT NULL
+    [LogLevel] tinyint NOT NULL DEFAULT(5)
     CONSTRAINT [PK_Exceptions] PRIMARY KEY Clustered ([Id] ASC)
 
     WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
